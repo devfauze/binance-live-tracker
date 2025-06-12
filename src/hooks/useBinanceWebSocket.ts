@@ -6,14 +6,13 @@ export const useBinanceWebSocket = () => {
     const ws = useRef<WebSocket | null>(null);
 
     useEffect(() => {
-        // Feche qualquer WebSocket anterior antes de criar um novo
         if (ws.current) {
             ws.current.close();
             ws.current = null;
         }
 
         if (selectedSymbols.length === 0) {
-            return; // Nenhum símbolo para acompanhar
+            return;
         }
 
         const formatted = selectedSymbols
@@ -37,15 +36,12 @@ export const useBinanceWebSocket = () => {
                     priceChangePercent: ticker.P,
                 });
             } catch (e) {
-                // Proteção contra mensagens inesperadas
             }
         };
 
         ws.current.onerror = (e) => {
-            // Opcional: adicione log ou tratamento de erro
         };
 
-        // Cleanup para fechar o WebSocket ao desmontar/ou mudar os símbolos acompanhados
         return () => {
             if (ws.current) {
                 ws.current.close();
